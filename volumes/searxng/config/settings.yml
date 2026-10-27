@@ -1,0 +1,28 @@
+use_default_settings: true
+
+general:
+  instance_name: "SIGO Search Module"
+
+search:
+  safe_search: 0
+  formats:
+    - html
+    - json
+
+server:
+  secret_key: "sigo-prueba-local-2026"
+  limiter: false
+  image_proxy: false
+
+engines:
+  - name: bing
+    disabled: false
+
+  - name: yahoo
+    disabled: false
+
+  - name: resulthunter
+    disabled: false
+
+  - name: yep
+    disabled: false

@@ -1,0 +1,55 @@
+services:
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    container_name: sigo-searxngd
+
+    volumes:
+      - ./volumes/searxng/config:/etc/searxng
+      - ./volumes/searxng/data:/var/cache/searxng
+
+    networks:
+      - sigo-network
+  
+  search:
+    image: bermeopablo04/sigo-search:v1.4
+    container_name: sigo-search
+
+    environment:
+      SEARXNG_URL: "http://searxng:8080"
+
+    volumes:
+      - ./volumes/search_config:/app/config
+      - ./volumes/search_outputs:/app/outputs
+
+    depends_on:
+      - searxng
+
+    networks:
+      - sigo-network
+
+
+  web:
+    image: bermeopablo04/sigo-web:v1.0
+    container_name: sigo-web
+
+    environment:
+      SEARCH_URL: "http://search:8080"
+
+    volumes:
+      - ./volumes/web_config:/app/config
+      - ./volumes/web_outputs:/app/outputs
+
+    ports:
+      - "5500:80"
+    depends_on:
+      - search
+
+    networks:
+      - sigo-network
+
+networks:
+
+  sigo-network:
+    name: sigo-network
+    driver: bridge
